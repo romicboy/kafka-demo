@@ -1,3 +1,3 @@
 # kafkaDemo
 
-kafka 简单 例子
+java 调用 kafka 的简单例子
