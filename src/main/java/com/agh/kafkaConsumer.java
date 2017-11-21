@@ -1,11 +1,5 @@
 package com.agh;
 
-/**
- * Created by romic on 2016/12/21.
- */
-
-
-
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -19,13 +13,6 @@ import java.util.Properties;
 
 /**
  * 接收数据
- * 接收到: message: 10
- 接收到: message: 11
- 接收到: message: 12
- 接收到: message: 13
- 接收到: message: 14
- * @author zm
- *
  */
 public class kafkaConsumer extends Thread{
 
@@ -53,14 +40,15 @@ public class kafkaConsumer extends Thread{
 
     private ConsumerConnector createConsumer() {
         Properties properties = new Properties();
-        properties.put("zookeeper.connect", "192.168.11.169:2181");//声明zk
-        properties.put("group.id", "test_group");// 必须要使用别的组名称， 如果生产者和消费者都在同一组，则不能访问同一组内的topic数据
+        properties.put("zookeeper.connect", "127.0.0.1:2181");//声明zk
+        properties.put("group.id", "test_group");// 用来唯一标识consumer进程所在组的字符串，如果设置同样的group  id，表示这些processes都是属于同一个consumer  group
+        properties.put("auto.commit.interval.ms", "1000");  // consumer向zookeeper提交offset的频率，单位是秒
         return Consumer.createJavaConsumerConnector(new ConsumerConfig(properties));
     }
 
 
     public static void main(String[] args) {
-        new kafkaConsumer("test").start();// 使用kafka集群中创建好的主题 test
+        new kafkaConsumer("test_topic").start();// 使用kafka集群中创建好的主题 test
 
     }
 
